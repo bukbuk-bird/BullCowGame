@@ -33,7 +33,7 @@ int main()
 // Intro Method here
 void PrintIntro()
 {
-	std::cout << "Welcome to Bulls and Cows, a fun word game.\n";
+	std::cout << "\n\nWelcome to Bulls and Cows, a fun word game.\n";
 	std::cout << "Can you guess the " << BCGame.GetHiddenWordLength();
 	std::cout << " letter isogram I'm thinking of?\n";
 	std::cout << std::endl;
@@ -47,8 +47,9 @@ void PlayGame()
 	BCGame.Reset();
 	int32 MaxTries = BCGame.GetMaxTries();
 
-	// My loop for number of turns asking for guesses
-	for (int32 count = 1; count <= MaxTries; count++){	// TODO change from FOR to WHILE
+	// My loop asking for guesses while the game is NOT won
+	// and there are still tries remaining
+	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries){	// TODO change from FOR to WHILE
 		FText Guess = GetValidGuess(); 
 
 		// submit Valid Guess to the game and recieve counts
@@ -104,5 +105,3 @@ FText GetValidGuess()
 }
 
 
-// this is a test for the git system I set up 
-// try number two
