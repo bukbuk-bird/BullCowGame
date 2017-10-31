@@ -1,2 +1,3 @@
-﻿  main.cpp
-  BullCowGame.vcxproj -> C:\Users\Holotrope\Documents\Unreal Projects\Section_2\Section_2_Solution\Debug\BullCowGame.exe
+﻿  FBullCowGame.cpp
+c:\users\sam\desktop\unreal course\section_2_repo\bullcowgame\fbullcowgame.cpp(100): warning C4129: 'O': unrecognized character escape sequence
+  BullCowGame.vcxproj -> C:\Users\Sam\Desktop\Unreal Course\Section_2_Repo\BullCowGame\Debug\BullCowGame.exe

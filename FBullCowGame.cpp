@@ -1,39 +1,42 @@
+/*This is my class file. It's where my methods are defined. */
 #include "FBullCowGame.h"
+#pragma once
+#include <map>
 
-FBullCowGame::FBullCowGame()
-{
-	Reset();
-}
+//makes syntax unreal friendly
+#define TMap std::map
+using int32 = int;
 
-int32 FBullCowGame::GetMaxTries() const { return MyMaxTries; }
+FBullCowGame::FBullCowGame() { Reset(); }//default constructor
+
+
 int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
 int32 FBullCowGame::GetHiddenWordLength() const {return MyHiddenWord.length();}
 bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
 
+int32 FBullCowGame::GetMaxTries() const {
+	TMap<int32, int32> WordLengthToMaxTries{ {3,5}, {4,5}, {5,5}, {6,5} };
+	return WordLengthToMaxTries[MyHiddenWord.length()];
+}
+
 void FBullCowGame::Reset()
 {
-	constexpr int32 MAX_TRIES = 8;
-	const FString HIDDEN_WORD = "planet";
+	const FString HIDDEN_WORD = "planet"; // must be an isogram
 
-	MyMaxTries = MAX_TRIES;
 	MyHiddenWord = HIDDEN_WORD;
 	MyCurrentTry = 1;
 	bGameIsWon = false;
 	return;
 }
 
-// TODO create a method to define a correct answer
 
-
-
-
-EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const // TODO check if guess is isogram of correct length
+EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const // checks if guess is isogram of correct length
 {
-	if (false) 	// if the guess isn't an isogram, 
+	if (!bIsIsogram(Guess)) 	// if the guess isn't an isogram, 
 	{
-		return EGuessStatus::Not_Isogram;	//TODO write function
+		return EGuessStatus::Not_Isogram;	
 	}
-	else if (false) 	// if the guess isn't lowercase, TODO write function 
+	else if (!bIsLowerCase(Guess)) 	// if the guess isn't lowercase, TODO write function 
 	{
 		return EGuessStatus::Not_Lowercase;
 	}
@@ -47,11 +50,6 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const // TODO check
 	}
 
 }
-
-
-
-
-
 
 // receives a VALID guess, incriments turn, and returns count
 FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
@@ -78,9 +76,60 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 	if (BullCowCount.Bulls == WordLength) {
 		bGameIsWon = true;
 	}
-	else 
+	else
 	{
 		bGameIsWon = false;
 	}
 	return BullCowCount;
 }
+
+/* Function to allow players to choose a word length
+FString FBullCowGame::SelectWordLength(FString Length)
+{
+	std::cout << "Would you like the hidden word to be 3,4 or 5 characters long?";
+	FText Length = "";
+	std::getline(std::cin, Response);
+	return (Response[0] == 'y') || (Response[0] == 'Y');
+
+	if (Length == 3)
+		return 3;
+	else if (Length == 4)
+		return 4;
+	else
+		return 5;
+
+} */
+
+bool FBullCowGame::bIsIsogram(FString Word) const
+{
+	if (Word.length() <= 1) {return true;}// treat 0 and 1 letter words as isograms
+	TMap<char, bool> LetterSeen; //set up our map
+	for (auto Letter : Word) //for all letters of the word
+	{
+		Letter = tolower(Letter);
+		if (LetterSeen[Letter]) { //loop through all letters of the word
+			return false;
+		}
+		else {
+			LetterSeen[Letter] = true; 
+		}
+	}
+	return true; // for cases where player enters 0 or 1 letter words
+}
+
+bool FBullCowGame::bIsLowerCase(FString Word) const
+{
+	if (Word == "\O") { return true; }
+	if (Word == "      ") { return true; }
+	for (auto Letter : Word) {
+		if (!islower(Letter)) { 
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	return false;
+}
+
+
